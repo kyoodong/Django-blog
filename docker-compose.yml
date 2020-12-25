@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   db:
@@ -9,13 +9,17 @@ services:
       - MYSQL_USER=kyoodong
       - MYSQL_PASSWORD=1q2w!Q@W
     container_name: tutorial-blog-mysql
+    command: mysqld --default-authentication-plugin=mysql_native_password
     ports:
       - 3307:3306
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
+    container_name: blog-web
     volumes:
-      - .:/code
+      - type: bind
+        source: .
+        target: /web
     ports:
       - "8000:8000"
     depends_on:
